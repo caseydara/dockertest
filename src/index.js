@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import './style.scss';
 
-$('#main').html('Here we go!');
+$('#main').html('Here we go!!');
 
 let time = 0;
 setInterval(() => {
