@@ -8,6 +8,8 @@
         "ecmaVersion": 2023
     },
     "rules": {
+        // add this rule to your eslintrc
+        "no-param-reassign": ["error",{ "props": true, "ignorePropertyModificationsForRegex": [ "^draft"]}],
         "strict": 0,
         "quotes": [2, "single"],
         "no-else-return": 0,

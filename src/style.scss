@@ -1,15 +1,82 @@
-body, html {
-    font-family: "Roboto", sans-serif;
-    background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+body {
+    font-family: "Itim", cursive;
+    font-weight: 320;
+    font-style: normal;
+    font-size: large;
+    background-image: url('https://static.vecteezy.com/system/resources/previews/007/385/579/non_2x/flat-design-whiteboard-in-wooden-cabinet-background-free-vector.jpg');
+    background-position: center; /* Center the background image */
+    background-attachment: fixed; /* Prevent background from scrolling with content */
+    min-height: 100vh; /* Ensure the container covers the entire viewport height */
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+}
+/* App.css */
+
+/* Button styles */
+button {
+    background-color: whitesmoke; /* Green */
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+  }
+  
+  .button:hover {
+    background-color: #45a049; /* Darker green */
+  }
+input {
+    background-color: whitesmoke; /* Green */
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+
+}
+.addNote {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
 }
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 
-.logo {
-    background-image: url('src/Dartmouth-College-Logo.png');
-    width: 100px;
-    height: 100px;
-    background-repeat: no-repeat;
-    background-size: contain;
+p, input, button {
+    font-family: "Itim", cursive;
+    font-weight: 320;
+    font-style: normal;
+    font-size: large;
+}
+
+.itim-regular {
+    font-family: "Itim", cursive;
+    font-weight: 400;
+    font-style: normal;
 }
 
 :root {
