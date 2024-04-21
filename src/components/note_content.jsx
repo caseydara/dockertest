@@ -4,11 +4,13 @@ import Draggable from 'react-draggable';
 import { CiEdit } from 'react-icons/ci';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MdDeleteOutline } from 'react-icons/md';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import ReactMarkdown from 'react-markdown';
 
 // eslint-disable-next-line react/prop-types
 function Note({
   // eslint-disable-next-line react/prop-types
-  title, content, color, onDelete,
+  title, content, color, onDelete, position,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -44,8 +46,6 @@ function Note({
 
   return (
     <Draggable
-      defaultPosition={{ x: 20, y: 20 }}
-      grid={[25, 25]}
       onStart={() => console.log('Drag started')}
       onDrag={() => console.log('Dragging')}
       onStop={() => console.log('Drag stopped')}
@@ -58,6 +58,9 @@ function Note({
           margin: '10px',
           width: '200px',
           cursor: 'move',
+          alignItems: 'flex-start',
+          alignContent: 'center',
+          overflow: 'hidden',
         }}
       >
         {isEditing ? (
@@ -69,7 +72,7 @@ function Note({
         ) : (
           <div>
             <h3 style={{ wordWrap: 'break-word' }}>{editedTitle}</h3>
-            <p style={{ wordWrap: 'break-word' }}>{editedContent}</p>
+            <ReactMarkdown>{editedContent}</ReactMarkdown>
             <button type="button" onClick={handleEdit} aria-label="Edit note"><CiEdit /></button>
             <button type="button" onClick={handleDelete} aria-label="Delete note"><MdDeleteOutline /></button>
           </div>

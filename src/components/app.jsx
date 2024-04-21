@@ -39,9 +39,6 @@ function App(props) {
           title: newNoteTitle,
           text: newNoteContent,
           color: noteColor, // Add color to the note object
-          x: 400,
-          y: 12,
-          zIndex: 26,
         },
       }));
       handleChangeId(); // Increment the ID after adding a new note
@@ -59,7 +56,6 @@ function App(props) {
     delete updatedNotes[id];
     setNotes(updatedNotes);
   };
-
   return (
     <div>
       <div className="addNote">
@@ -82,16 +78,17 @@ function App(props) {
         />
         <button type="button" onClick={handleAddNote}>Add Note</button>
       </div>
-      {Object.keys(notes).map((noteId) => (
+      {Object.keys(notes).map((noteId, index) => (
         <Note
           key={noteId}
-          id={noteId} // Pass the note's ID as a prop
+          id={noteId}
           title={notes[noteId].title}
           content={notes[noteId].text}
-          color={notes[noteId].color} // Pass the note's color as a prop
-          onDelete={() => handleDeleteNote(noteId)} // Pass a function to handle note deletion
+          color={notes[noteId].color}
+          onDelete={() => handleDeleteNote(noteId)}
         />
       ))}
+
     </div>
   );
 }
