@@ -10,11 +10,13 @@ import ReactMarkdown from 'react-markdown';
 // eslint-disable-next-line react/prop-types
 function Note({
   // eslint-disable-next-line react/prop-types
-  title, content, color, onDelete, position,
+  title, content, color, onDelete, onEdit, position,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
+  const [notePosition, setNotePosition] = useState(position);
+  const editedColor = color; // New state for edited color
 
   useEffect(() => {
     setEditedTitle(title);
@@ -38,21 +40,27 @@ function Note({
   };
 
   const handleSave = () => {
-    setEditedContent(editedContent);
-    setEditedTitle(editedTitle);
+    // Call onEdit function with updated title and content
+    onEdit(editedTitle, editedContent, editedColor, notePosition);
     setIsEditing(false);
-    // You might want to add logic here to save changes to backend or state management system
+  };
+  const handleDragStop = (e, data) => {
+    const { x, y } = data;
+    setNotePosition({ x, y });
+    onEdit(editedTitle, editedContent, editedColor, { x: data.x, y: data.y });
   };
 
   return (
     <Draggable
+      defaultPosition={notePosition}
+      onStop={handleDragStop}
       onStart={() => console.log('Drag started')}
       onDrag={() => console.log('Dragging')}
-      onStop={() => console.log('Drag stopped')}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
     >
       <div
         style={{
-          backgroundColor: color,
+          backgroundColor: editedColor,
           borderRadius: 5,
           padding: '10px',
           margin: '10px',
@@ -61,6 +69,7 @@ function Note({
           alignItems: 'flex-start',
           alignContent: 'center',
           overflow: 'hidden',
+          position: 'absolute',
         }}
       >
         {isEditing ? (

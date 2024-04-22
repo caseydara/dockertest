@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Note from './note_content'; // Import the Note component
+import {
+  addNote, getAllNotes, deleteNote, editNote,
+} from '../services/datastore'; // Import the addNote function
 
 function App(props) {
   const [notes, setNotes] = useState({});
-  const [currentId, setCurrentId] = useState(1); // Initialize currentId to 1
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [newNoteContent, setNewNoteContent] = useState('');
   const [noteColor, setNoteColor] = useState('#bcecdc'); // Default color
 
+  // Use useEffect to fetch the note when the component mounts
   useEffect(() => {
-    // Create a new note object with a unique ID whenever currentId changes
-    setNotes((prevNotes) => ({
-      ...prevNotes,
-    }));
-  }, [currentId]); // useEffect will re-run whenever currentId changes
-
-  const handleChangeId = () => {
-    setCurrentId((prevId) => prevId + 1); // Increment previous ID by 1
-  };
+    getAllNotes((notesData) => {
+      setNotes(notesData || {});
+    });
+  }, []); // Run only once on component mount
 
   const handleTitleChange = (e) => {
     setNewNoteTitle(e.target.value);
@@ -33,15 +31,10 @@ function App(props) {
 
   const handleAddNote = () => {
     if (newNoteTitle.trim() !== '' && newNoteContent.trim() !== '') {
-      setNotes((prevNotes) => ({
-        ...prevNotes,
-        [`id${currentId}`]: {
-          title: newNoteTitle,
-          text: newNoteContent,
-          color: noteColor, // Add color to the note object
-        },
-      }));
-      handleChangeId(); // Increment the ID after adding a new note
+      // Get the default position of the note
+      const defaultPosition = { x: 0, y: 0 };
+      // Add note using Firebase function and pass default position
+      addNote(newNoteTitle, newNoteContent, noteColor, defaultPosition.x, defaultPosition.y);
       setNewNoteTitle(''); // Clear the input field after adding a new note
       setNewNoteContent(''); // Clear the input field after adding a new note
     } else {
@@ -51,10 +44,26 @@ function App(props) {
   };
 
   const handleDeleteNote = (id) => {
-    // Function to delete a note by its ID
-    const updatedNotes = { ...notes };
-    delete updatedNotes[id];
-    setNotes(updatedNotes);
+    // Call deleteNote function to delete the note from the database
+    deleteNote(id);
+  };
+
+  const handleEditNote = (noteId, editedTitle, editedContent, editedColor, notePosition) => {
+    // Ensure that editedTitle and editedContent are not empty
+    if (editedTitle.trim() !== '' && editedContent.trim() !== '') {
+      // Construct updatedNote object
+      const updatedNote = {
+        title: editedTitle,
+        content: editedContent,
+        color: editedColor,
+        position: notePosition,
+        // You might need to include other properties like color and position if they can be edited
+      };
+      // Call editNote function to edit the note in the database
+      editNote(noteId, updatedNote);
+    } else {
+      console.error('Please enter both title and content for the note.');
+    }
   };
   return (
     <div>
@@ -83,9 +92,11 @@ function App(props) {
           key={noteId}
           id={noteId}
           title={notes[noteId].title}
-          content={notes[noteId].text}
+          content={notes[noteId].content}
           color={notes[noteId].color}
           onDelete={() => handleDeleteNote(noteId)}
+          position={notes[noteId].position} // Pass the position of the note
+          onEdit={(editedTitle, editedContent, editedColor, notePosition) => handleEditNote(noteId, editedTitle, editedContent, editedColor, notePosition)}
         />
       ))}
 
